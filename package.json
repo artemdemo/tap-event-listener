@@ -1,0 +1,22 @@
+{
+  "name": "tapEvent",
+  "version": "0.1.0",
+  "description": "Tap Event Listener",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/artemdemo/tap-event-listener.git"
+  },
+  "keywords": [
+    "tap",
+    "events",
+    "tap",
+    "listener"
+  ],
+  "author": "Artem Demo",
+  "bugs": {
+    "url": "https://github.com/artemdemo/tap-event-listener/issues"
+  },
+  "dependencies": {
+    "bootstrap": "~3.3.2"
+  }
+}
