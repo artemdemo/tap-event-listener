@@ -1,4 +1,6 @@
-(function( document ){
+// Some JShint globals:
+/* global document, console, Event*/
+(function (document) {
 	"use strict";
 
 	/**
@@ -19,7 +21,7 @@
 	 *	}, false);
 	 * 
 	 */
-	var TapEvents = function() {
+	var TapEvents = function () {
 		var self = this;
 
 		/**
@@ -88,7 +90,7 @@
 
 			// On touch end I'm checking whether current event is tap or no
 			document.addEventListener('touchend', function() {
-				if ( thisIsTap && touchstartTargetElement != null && TapEvent != null ) {
+				if ( thisIsTap && touchstartTargetElement !== null && TapEvent !== null ) {
 					touchstartTargetElement.dispatchEvent( TapEvent );
 				}
 			}, false);
@@ -97,7 +99,7 @@
 			document.addEventListener('touchmove', cancelTouch, false);
 			document.addEventListener('touchleave', cancelTouch, false);
 			document.addEventListener('touchcancel', cancelTouch, false);
-		};
+		}
 
 		/**
 		 * Tap event registration
@@ -108,7 +110,7 @@
 		 */
 		function registerTapEvent() {
 			TapEvent = new Event( tapEventName );
-		};
+		}
 
 		/**
 		 * Cancel that current event is touch event
@@ -120,7 +122,7 @@
 		function cancelTouch() {
 			thisIsTap = false;
 			touchstartTargetElement = null;
-		};
+		}
 
 		/**
 		 * Logging function
@@ -139,12 +141,11 @@
 					msg = "%c" + msg;
 					console.log( msg, "font-weight: 700" );
 					break;
-				case "log":
 				default:
 					console.log(msg);
 					break;
 			}
-		};
+		}
 	};
 
 	/*
