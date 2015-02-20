@@ -2,18 +2,34 @@
 <html lang="en-US" dir="ltr">
 <head>
 	<title>Tap Event Listener</title>
-
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<link rel="stylesheet" media="all" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" media="all" href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css" />
 	<link rel="stylesheet" media="all" href="css/style.css" />
 
 	<script type="text/javascript" src="js/tapEvents.js"></script>
-	<script type="text/javascript">
-
-	</script>
+	
 </head>
 <body>
+
+	<div class="container">
+		<p>
+			<div id="tapBtn" class="btn btn-primary">
+				<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
+				Tap me
+			</div>
+		</p>
+	</div>
 	
+	<script type="text/javascript">
+		document.getElementById('tapBtn').addEventListener('tap', function(e){
+			console.log('TAP - catched on #tapBtn');
+		}, false);
+		document.addEventListener('tap', function(e){
+			console.log('TAP - catched on document');
+		}, true)	
+	</script>
+
 </body>
 </html>
