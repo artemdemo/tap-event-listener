@@ -11,36 +11,67 @@
     <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
 
 	<script type="text/javascript" src="js/tapEvents.js"></script>
-	
+
+    <style>
+        .container {
+            margin-top: 100px;
+        }
+        .buttons-row {
+            margin-bottom: 15px;
+        }
+    </style>
+
 </head>
 <body>
 
 	<div class="container">
-		<p>
-			<div id="tapBtn" class="btn btn-primary">
-				<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
-				Tap me (vanilla JS)
-			</div>
+        <div class="buttons-row">
+            <div id="tapBtn" class="btn btn-primary">
+                <span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
+                Tap me (vanilla JS)
+            </div>
             <div id="tapBtnJQ" class="btn btn-primary">
-				<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
-				Tap me (jQuery)
-			</div>
-		</p>
+                <span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
+                Tap me (jQuery)
+            </div>
+        </div>
+        <div class="buttons-row">
+            <div id="clickBtn" class="btn btn-warning">
+                <span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
+                Click me (vanilla JS)
+            </div>
+            <div id="clickBtnJQ" class="btn btn-warning">
+                <span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
+                Click me (jQuery)
+            </div>
+        </div>
 	</div>
 	
 	<script type="text/javascript">
-        // Test with vanilla JS
+		/*
+		 * Wait untill DOM is ready.
+		 * All browsers except IE<9 support it.
+		 */
+		document.addEventListener( "DOMContentLoaded", function(){
+			TapEvents.init({
+                eventTimeout: 0
+            })
+		}, false );
+
 		document.getElementById('tapBtn').addEventListener('tap', function(e){
-			console.log('TAP - catched on #tapBtn');
+			console.log('TAP - catched on #tapBtn', e);
 		}, false);
-        
-		/*document.addEventListener('tap', function(e){
-			console.log('TAP - catched on document');
-		}, true);*/
-        
-        // Test with jQuery
-        $('#tapBtnJQ').on('tap', function(){
-            console.log('TAP - catched on #tapBtnJQ');
+
+        $('#tapBtnJQ').on('tap', function(e){
+            console.log('TAP - catched on #tapBtnJQ', e);
+        });
+
+        document.getElementById('clickBtn').addEventListener('click', function(e){
+            console.log('CLICK - catched on #clickBtn');
+        }, false);
+
+        $('#clickBtnJQ').on('click', function(){
+            console.log('CLICK - catched on #clickBtnJQ');
         });
 	</script>
 

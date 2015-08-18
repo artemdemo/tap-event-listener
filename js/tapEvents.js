@@ -1,6 +1,6 @@
 // Some JShint globals:
 /* global document, console, Event*/
-(function (document) {
+(function (document, window) {
 	"use strict";
 
 	/**
@@ -21,8 +21,8 @@
 	 *	}, false);
 	 * 
 	 */
-	var TapEvents = function () {
-		var self = this;
+	window.TapEvents = (function () {
+		var TapEventMain = {};
 
 		/**
 		 * Define whether current event is tap or not.
@@ -47,7 +47,7 @@
 		 *
 		 * @private
 		 * @memberof TapEvents
-		 * @type {Object}
+		 * @type {Event}
 		 */
 		var TapEvent = null;
 
@@ -62,13 +62,24 @@
 		var tapEventName = 'tap';
 
 		/**
+		 * For long tapping events it can be useful o set timeout
+		 * @private
+		 * @memberof TapEvents
+		 * @type {number}
+		 */
+		var eventTimeout = 0;
+
+		var timeoutID = null;
+
+		/**
 		 * Class initialization
 		 *
 		 * @function init
 		 * @public
 		 * @memberof TapEvents
 		 */
-		this.init = function() {
+		TapEventMain.init = function(options) {
+			if ( options.hasOwnProperty('eventTimeout') ) eventTimeout = options.eventTimeout;
 			bindEvents();
 			registerTapEvent();
 		};
@@ -86,16 +97,24 @@
 			document.addEventListener('touchstart', function(e){
 				thisIsTap = true;
 				touchstartTargetElement = e.target;
+				if ( eventTimeout > 0 ) {
+					timeoutID = setTimeout(function(){
+						timeoutID = null;
+						if ( thisIsTap && touchstartTargetElement !== null && TapEvent !== null ) {
+							touchstartTargetElement.dispatchEvent( TapEvent );
+						}
+					}, eventTimeout);
+				}
 			}, false);
 
 			// On touch end I'm checking whether current event is tap or no
 			document.addEventListener('touchend', function() {
-				if ( thisIsTap && touchstartTargetElement !== null && TapEvent !== null ) {
+				if ( thisIsTap && touchstartTargetElement !== null && TapEvent !== null && eventTimeout === 0 ) {
 					touchstartTargetElement.dispatchEvent( TapEvent );
 				}
 			}, false);
 
-			// Cacelling tap event
+			// Cancelling tap event
 			document.addEventListener('touchmove', cancelTouch, false);
 			document.addEventListener('touchleave', cancelTouch, false);
 			document.addEventListener('touchcancel', cancelTouch, false);
@@ -122,39 +141,12 @@
 		function cancelTouch() {
 			thisIsTap = false;
 			touchstartTargetElement = null;
+			if ( !! timeoutID ) clearTimeout(timeoutID);
+			timeoutID = null;
 		}
 
-		/**
-		 * Logging function
-		 *
-		 * @function $log
-		 * @param msg {String} - Text string to be printed in cinsole
-		 * @param type {String} - Type of string, will affect it's style (font-weight, color, etc)
-		 * @private
-		 * @memberof TapEvents
-		 */
-		function $log(msg, type) {
-			switch(type){
-				case "b":
-				case "bold":
-				case "strong":
-					msg = "%c" + msg;
-					console.log( msg, "font-weight: 700" );
-					break;
-				default:
-					console.log(msg);
-					break;
-			}
-		}
-	};
+		return TapEventMain;
 
-	/*
-	 * Wait untill DOM is ready.
-	 * All browsers except IE<9 support it.
-	 */
-	document.addEventListener( "DOMContentLoaded", function(){
-		var _te = new TapEvents();
-		_te.init();
-	}, false );
+	})();
 
-})( document );
+})( document, window );
